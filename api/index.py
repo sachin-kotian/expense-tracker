@@ -30,3 +30,9 @@ def delete_expense(expense_id: int):
     global expenses
     expenses = [e for e in expenses if e["id"] != expense_id]
     return {"message": "Deleted"}
+
+
+
+@app.get("/")
+def root():
+    return {"message": "API working"}
