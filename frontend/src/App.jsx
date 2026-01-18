@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
 
-const API_URL = "/api";
+const API_URL = "https://backend-expense-tracker-theta.vercel.app/api";
+
 
 
 function App() {
