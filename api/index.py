@@ -14,17 +14,18 @@ app.add_middleware(
 # Temporary (no DB) storage
 expenses = []
 
-@app.get("/expenses")
+@app.get("/api/expenses")
 def get_expenses():
     return expenses
 
-@app.post("/expenses")
+
+@app.post("/api/expenses")
 def add_expense(expense: dict):
     expense["id"] = len(expenses) + 1
     expenses.append(expense)
     return expense
 
-@app.delete("/expenses/{expense_id}")
+@app.delete("/api/expenses/{expense_id}")
 def delete_expense(expense_id: int):
     global expenses
     expenses = [e for e in expenses if e["id"] != expense_id]
