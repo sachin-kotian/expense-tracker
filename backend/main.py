@@ -4,6 +4,7 @@ from database import SessionLocal, engine
 from models import Base, Expense
 from schemas import ExpenseCreate, ExpenseOut
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import HTTPException
 
 Base.metadata.create_all(bind=engine)
 
@@ -53,3 +54,22 @@ def delete_expense(expense_id: int, db: Session = Depends(get_db)):
     db.delete(exp)
     db.commit()
     return {"message": "Deleted successfully"}
+
+
+
+
+@app.put("/expenses/{expense_id}", response_model=ExpenseOut)
+def update_expense(expense_id: int, expense: ExpenseCreate, db: Session = Depends(get_db)):
+    exp = db.query(Expense).filter(Expense.id == expense_id).first()
+    if not exp:
+        raise HTTPException(status_code=404, detail="Expense not found")
+
+    exp.title = expense.title
+    exp.amount = expense.amount
+    exp.category = expense.category
+    exp.date = expense.date
+
+    db.commit()
+    db.refresh(exp)
+    return exp
+
